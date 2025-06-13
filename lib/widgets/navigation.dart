@@ -63,17 +63,20 @@ class _CustomAppBarState extends State<CustomAppBar> {
     VoidCallback onPressed, {
     bool isActive = false,
   }) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: isActive ? AppColors.accent : AppColors.primaryText,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-      child: Text(
-        text,
-        style: AppTypography.bodyMedium.copyWith(
-          fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-          color: isActive ? AppColors.accent : AppColors.primaryText,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: isActive ? AppColors.accent : AppColors.primaryText,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        child: Text(
+          text,
+          style: AppTypography.bodyMedium.copyWith(
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+            color: isActive ? AppColors.accent : AppColors.primaryText,
+          ),
         ),
       ),
     );
@@ -101,7 +104,8 @@ class Footer extends StatelessWidget {
               _SocialIcon(
                 Icons.email,
                 () => _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
-              ),              const SizedBox(width: 16),
+              ),
+              const SizedBox(width: 16),
               _SocialImageIcon(
                 'assets/images/github.png',
                 () => _launchUrl('https://github.com/mun33b-exe'),
@@ -123,7 +127,7 @@ class Footer extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Developed with Flutter 💙',
+            'Developed by Muneeb with Flutter 💙',
             style: TextStyle(color: AppColors.secondaryText, fontSize: 12),
             textAlign: TextAlign.center,
           ),
@@ -133,33 +137,39 @@ class Footer extends StatelessWidget {
   }
 
   Widget _SocialIcon(IconData icon, VoidCallback onPressed) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      color: AppColors.accent,
-      iconSize: 24,
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.button,
-        padding: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon),
+        color: AppColors.accent,
+        iconSize: 24,
+        style: IconButton.styleFrom(
+          backgroundColor: AppColors.button,
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }
 
   Widget _SocialImageIcon(String imagePath, VoidCallback onPressed) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Image.asset(
-        imagePath,
-        width: 24,
-        height: 24,
-        color: AppColors.accent,
-      ),
-      iconSize: 24,
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.button,
-        padding: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Image.asset(
+          imagePath,
+          width: 24,
+          height: 24,
+          color: AppColors.accent,
+        ),
+        iconSize: 24,
+        style: IconButton.styleFrom(
+          backgroundColor: AppColors.button,
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }

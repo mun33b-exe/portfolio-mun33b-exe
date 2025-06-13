@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import '../constants/app_constants.dart';
 import '../widgets/common_widgets.dart';
@@ -306,21 +307,27 @@ class _CertificationCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () => _launchUrl(certification["credential"]!),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.accent.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.accent.withOpacity(0.3)),
-              ),
-              child: const Text(
-                "View Credential",
-                style: TextStyle(
-                  color: AppColors.accent,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => _launchUrl(certification["credential"]!),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+                ),
+                child: const Text(
+                  "View Credential",
+                  style: TextStyle(
+                    color: AppColors.accent,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
@@ -330,8 +337,12 @@ class _CertificationCard extends StatelessWidget {
     );
   }
 
-  void _launchUrl(String url) {
-    print('Would launch: $url');
-    // TODO: Implement URL launching when url_launcher is properly configured
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }

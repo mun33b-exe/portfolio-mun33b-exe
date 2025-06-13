@@ -41,7 +41,7 @@ class AppConstants {
       "company": "DevelopersHub Corporation",
       "duration": "June 2025 - Present",
       "description":
-          "Led the development of cross-platform mobile applications using Flutter, resulting in 40% faster development cycles.",
+          "Led the development of cross-platform mobile applications using Flutter.",
     },
   ];
 
@@ -59,30 +59,31 @@ class AppConstants {
   // Projects
   static const List<Map<String, dynamic>> projects = [
     {
-      "title": "E-Commerce Mobile App",
+      "title": "Chatzilla - Chat Application",
       "description":
-          "A full-featured e-commerce application built with Flutter and Firebase, supporting user authentication, product catalog, shopping cart, and payment integration.",
-      "technologies": ["Flutter", "Firebase", "Stripe API", "Provider"],
-      "github": "https://github.com/yourusername/ecommerce-app",
-      "demo": "https://your-demo-link.com",
-      "image": "assets/images/project1.png",
+          "Chatzilla is a chat application designed for real-time messaging and communication. It offers a user-friendly interface for seamless conversations and supports multiple chat features for enhanced collaboration.",
+      "technologies": ["Flutter", "Firebase", "Bloc"],
+      "github": "https://github.com/mun33b-exe/chatzilla",
+      "demo": "https://github.com/mun33b-exe/chatzilla",
+      "image": "assets/images/linkedin.png",
     },
     {
-      "title": "Task Management Dashboard",
+      "title": "Imei Tracker",
       "description":
-          "A responsive web application for project management with real-time collaboration features, built using React and Node.js.",
-      "technologies": ["React", "Node.js", "MongoDB", "Socket.io"],
-      "github": "https://github.com/yourusername/task-dashboard",
-      "demo": "https://your-demo-link.com",
+          "IMEI Manager is an application designed to manage, track, and validate IMEI numbers for mobile devices. Also have role based access control for admin and user.",
+      "technologies": ["Flutter", "Firebase"],
+      "github": "https://github.com/mun33b-exe/imei-manager",
+      "demo": "https://github.com/mun33b-exe/imei-manager",
       "image": "assets/images/project2.png",
     },
     {
-      "title": "Weather Forecast App",
+      "title": "HistoMeet - UI/UX Design Prototype",
       "description":
-          "A beautiful weather application with location-based forecasts, built with Flutter and integrated with weather APIs.",
-      "technologies": ["Flutter", "REST APIs", "Geolocator", "Provider"],
-      "github": "https://github.com/yourusername/weather-app",
-      "demo": "https://your-demo-link.com",
+          "Histomeet is a UI/UX design prototype created as part of my Human-Computer Interaction (HCI) semester project at COMSATS University. ",
+      "technologies": ["Figma"],
+      "github": "https://github.com/mun33b-exe/histomeet-ui-ux",
+      "demo":
+          "https://www.figma.com/design/87zDGjMBjTJzTdQpZbrDdl/HCI-Project?node-id=0-1&t=nkVRYEPqDdEztgER-1",
       "image": "assets/images/project3.png",
     },
   ];
