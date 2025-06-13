@@ -90,14 +90,13 @@ class Footer extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _SocialIcon(
+            children: [              _SocialIcon(
                 Icons.email,
                 () => _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
               ),
               const SizedBox(width: 16),
-              _SocialIcon(
-                Icons.code,
+              _SocialImageIcon(
+                'assets/images/github.png',
                 () => _launchUrl('https://github.com/mun33b-exe'),
               ),
               const SizedBox(width: 16),
@@ -131,6 +130,24 @@ class Footer extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon),
       color: AppColors.accent,
+      iconSize: 24,
+      style: IconButton.styleFrom(
+        backgroundColor: AppColors.button,
+        padding: const EdgeInsets.all(12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  Widget _SocialImageIcon(String imagePath, VoidCallback onPressed) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Image.asset(
+        imagePath,
+        width: 24,
+        height: 24,
+        color: AppColors.accent,
+      ),
       iconSize: 24,
       style: IconButton.styleFrom(
         backgroundColor: AppColors.button,

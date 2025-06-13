@@ -100,8 +100,8 @@ class MobileNavigation extends StatelessWidget {
                         onPressed: () =>
                             _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
                       ),
-                      _SocialIconButton(
-                        icon: Icons.code,
+                      _SocialImageIconButton(
+                        imagePath: 'assets/images/github.png',
                         onPressed: () =>
                             _launchUrl('https://github.com/mun33b-exe'),
                       ),
@@ -162,6 +162,32 @@ class _SocialIconButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon),
       color: AppColors.accent,
+      iconSize: 20,
+      style: IconButton.styleFrom(
+        backgroundColor: AppColors.button,
+        padding: const EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      ),
+    );
+  }
+}
+
+class _SocialImageIconButton extends StatelessWidget {
+  final String imagePath;
+  final VoidCallback onPressed;
+
+  const _SocialImageIconButton({required this.imagePath, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Image.asset(
+        imagePath,
+        width: 20,
+        height: 20,
+        color: AppColors.accent,
+      ),
       iconSize: 20,
       style: IconButton.styleFrom(
         backgroundColor: AppColors.button,

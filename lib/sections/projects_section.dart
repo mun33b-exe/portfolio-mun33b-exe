@@ -169,11 +169,15 @@ class _ProjectCardState extends State<_ProjectCard>
                   ),
                   const SizedBox(height: 24),
                   Row(
-                    children: [
-                      Expanded(
+                    children: [                      Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () => _launchUrl(widget.project["github"]),
-                          icon: const Icon(Icons.code, size: 16),
+                          icon: Image.asset(
+                            'assets/images/github.png',
+                            width: 16,
+                            height: 16,
+                            color: AppColors.accent,
+                          ),
                           label: const Text("Code"),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.accent,
