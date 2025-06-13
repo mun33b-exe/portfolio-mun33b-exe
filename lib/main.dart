@@ -98,10 +98,10 @@ class _PortfolioHomeState extends State<PortfolioHome> {
     _navigationService.registerSection('projects', _projectsKey);
     _navigationService.registerSection('contact', _contactKey);
   }
-
   @override
   void dispose() {
     _scrollController.dispose();
+    _navigationService.dispose();
     super.dispose();
   }
 

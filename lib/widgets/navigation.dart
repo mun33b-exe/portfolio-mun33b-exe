@@ -1,59 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../constants/colors.dart';
 import '../constants/typography.dart';
 import '../services/navigation_service.dart';
 import 'common_widgets.dart';
-import 'mobile_navigation.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
+  
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+  
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  final NavigationService _navigationService = NavigationService();
+  
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.background.withOpacity(0.95),
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      title: Text('Portfolio', style: AppTypography.h5),
-      actions: ResponsiveWidget.isDesktop(context)
-          ? [
-              _NavButton(
-                'About',
-                () => NavigationService().scrollToSection('about'),
-              ),
-              _NavButton(
-                'Experience',
-                () => NavigationService().scrollToSection('experience'),
-              ),
-              _NavButton(
-                'Projects',
-                () => NavigationService().scrollToSection('projects'),
-              ),
-              _NavButton(
-                'Contact',
-                () => NavigationService().scrollToSection('contact'),
-              ),
-              const SizedBox(width: 16),
-            ]
-          : null,
+    return ValueListenableBuilder<String>(
+      valueListenable: _navigationService.currentSectionNotifier,      builder: (context, currentSection, child) {
+        return AppBar(
+          backgroundColor: AppColors.background.withOpacity(0.95),
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          title: Text('Portfolio', style: AppTypography.h5),
+          actions: ResponsiveWidget.isDesktop(context)
+              ? [
+                  _NavButton(
+                    'About',
+                    () => _navigationService.scrollToSection('about'),
+                    isActive: kIsWeb && currentSection == 'about',
+                  ),
+                  _NavButton(
+                    'Experience',
+                    () => _navigationService.scrollToSection('experience'),
+                    isActive: kIsWeb && currentSection == 'experience',
+                  ),
+                  _NavButton(
+                    'Projects',
+                    () => _navigationService.scrollToSection('projects'),
+                    isActive: kIsWeb && currentSection == 'projects',
+                  ),
+                  _NavButton(
+                    'Contact',
+                    () => _navigationService.scrollToSection('contact'),
+                    isActive: kIsWeb && currentSection == 'contact',
+                  ),
+                  const SizedBox(width: 16),
+                ]
+              : null,
+        );
+      },
     );
-  }
-
-  Widget _NavButton(String text, VoidCallback onPressed) {
+  }  Widget _NavButton(String text, VoidCallback onPressed, {bool isActive = false}) {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        foregroundColor: AppColors.primaryText,
+        foregroundColor: isActive ? AppColors.accent : AppColors.primaryText,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
       child: Text(
         text,
-        style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w500),
+        style: AppTypography.bodyMedium.copyWith(
+          fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+          color: isActive ? AppColors.accent : AppColors.primaryText,
+        ),
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class Footer extends StatelessWidget {
