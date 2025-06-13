@@ -51,24 +51,29 @@ class CustomButton extends StatelessWidget {
     this.isPrimary = true,
     this.icon,
   });
-
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isPrimary ? AppColors.accent : AppColors.button,
-        foregroundColor: AppColors.primaryText,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        elevation: 0,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) ...[Icon(icon, size: 20), const SizedBox(width: 8)],
-          Text(text, style: AppTypography.button),
-        ],
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isPrimary ? AppColors.accent : AppColors.button,
+          foregroundColor: AppColors.primaryText,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 0,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 20),
+              const SizedBox(width: 8),
+            ],
+            Text(text, style: AppTypography.button),
+          ],
+        ),
       ),
     );
   }

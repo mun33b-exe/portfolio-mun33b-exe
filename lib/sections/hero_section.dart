@@ -256,18 +256,20 @@ class _SocialButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _SocialButton({required this.icon, required this.onPressed});
-
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      color: AppColors.accent,
-      iconSize: 28,
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.button,
-        padding: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon),
+        color: AppColors.accent,
+        iconSize: 28,
+        style: IconButton.styleFrom(
+          backgroundColor: AppColors.button,
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }
@@ -281,19 +283,22 @@ class _SocialImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Image.asset(
-        imagePath,
-        width: 28,
-        height: 28,
-        color: AppColors.accent,
-      ),
-      iconSize: 28,
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.button,
-        padding: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Image.asset(
+          imagePath,
+          width: 28,
+          height: 28,
+          color: AppColors.accent,
+        ),
+        iconSize: 28,
+        style: IconButton.styleFrom(
+          backgroundColor: AppColors.button,
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }

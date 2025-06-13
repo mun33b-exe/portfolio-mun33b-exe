@@ -280,6 +280,7 @@ class _TechnologyItemState extends State<_TechnologyItem>
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => _controller.forward(),
       onExit: (_) => _controller.reverse(),
       child: ScaleTransition(

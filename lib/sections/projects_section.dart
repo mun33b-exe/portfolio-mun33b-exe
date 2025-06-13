@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import '../constants/app_constants.dart';
 import '../widgets/common_widgets.dart';
@@ -171,35 +172,42 @@ class _ProjectCardState extends State<_ProjectCard>
                   Row(
                     children: [
                       Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _launchUrl(widget.project["github"]),
-                          icon: Image.asset(
-                            'assets/images/github.png',
-                            width: 16,
-                            height: 16,
-                            color: AppColors.accent,
-                          ),
-                          label: const Text("Code"),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.accent,
-                            side: const BorderSide(color: AppColors.accent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: OutlinedButton.icon(
+                            onPressed: () =>
+                                _launchUrl(widget.project["github"]),
+                            icon: Image.asset(
+                              'assets/images/github.png',
+                              width: 16,
+                              height: 16,
+                              color: AppColors.accent,
+                            ),
+                            label: const Text("Code"),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.accent,
+                              side: const BorderSide(color: AppColors.accent),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _launchUrl(widget.project["demo"]),
-                          icon: const Icon(Icons.launch, size: 16),
-                          label: const Text("Demo"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.accent,
-                            foregroundColor: AppColors.primaryText,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _launchUrl(widget.project["demo"]),
+                            icon: const Icon(Icons.launch, size: 16),
+                            label: const Text("Demo"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.accent,
+                              foregroundColor: AppColors.primaryText,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                         ),
@@ -241,7 +249,11 @@ class _TechChip extends StatelessWidget {
   }
 }
 
-void _launchUrl(String url) {
-  // URL launch implementation
-  print('Launching: $url');
+Future<void> _launchUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    print('Could not launch $url');
+  }
 }
