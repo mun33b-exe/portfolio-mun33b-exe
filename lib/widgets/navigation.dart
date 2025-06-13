@@ -101,15 +101,14 @@ class Footer extends StatelessWidget {
               _SocialIcon(
                 Icons.email,
                 () => _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
-              ),
-              const SizedBox(width: 16),
+              ),              const SizedBox(width: 16),
               _SocialImageIcon(
                 'assets/images/github.png',
                 () => _launchUrl('https://github.com/mun33b-exe'),
               ),
               const SizedBox(width: 16),
-              _SocialIcon(
-                Icons.work,
+              _SocialImageIcon(
+                'assets/images/linkedin.png',
                 () => _launchUrl('https://linkedin.com/in/mun33b-exe'),
               ),
             ],
