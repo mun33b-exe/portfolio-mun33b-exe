@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../constants/app_constants.dart';
 import '../widgets/common_widgets.dart';
+import '../services/emailjs_service.dart' as emailjs;
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -198,20 +199,98 @@ class _ContactSectionState extends State<ContactSection> {
     );
   }
 
-  void _sendMessage() {
+  Future<void> _sendMessage() async {
     if (_formKey.currentState!.validate()) {
-      // Implement message sending logic
+      // Show loading indicator
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Message sent successfully!'),
+          content: Row(
+            children: [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
+              SizedBox(width: 16),
+              Text('Sending message...'),
+            ],
+          ),
           backgroundColor: AppColors.accent,
+          duration: Duration(seconds: 30),
         ),
       );
 
-      // Clear form
-      _nameController.clear();
-      _emailController.clear();
-      _messageController.clear();
+      try {
+        final success = await emailjs.EmailJSService.sendEmail(
+          fromName: _nameController.text.trim(),
+          fromEmail: _emailController.text.trim(),
+          message: _messageController.text.trim(),
+        );
+
+        // Hide the loading snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text(
+                    'Message sent successfully! I\'ll get back to you soon.',
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 4),
+            ),
+          );
+
+          // Clear form on success
+          _nameController.clear();
+          _emailController.clear();
+          _messageController.clear();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.error, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text(
+                    'Failed to send message. Please try again or email me directly.',
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 4),
+            ),
+          );
+        }
+      } catch (e) {
+        // Hide the loading snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.error, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Network error. Please check your connection and try again.',
+                ),
+              ],
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
     }
   }
 }

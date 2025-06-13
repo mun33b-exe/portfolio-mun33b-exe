@@ -1,3 +1,44 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+class EmailJSService {
+  static const String _serviceId = 'service_f7t42vg';
+  static const String _templateId = 'template_c8zfvol';
+  static const String _publicKey = '0shJBOSgvFc3vHjje';
+  static const String _url = 'https://api.emailjs.com/api/v1.0/email/send';
+
+  static Future<bool> sendEmail({
+    required String fromName,
+    required String fromEmail,
+    required String message,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse(_url),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'service_id': _serviceId,
+          'template_id': _templateId,
+          'user_id': _publicKey,
+          'template_params': {
+            'from_name': fromName,
+            'from_email': fromEmail,
+            'user_email': fromEmail, // Add this line
+            'reply_to': fromEmail, // Add this line
+            'to_email': 'm.muneeburremann@gmail.com', // Add this line
+            'message': message,
+          },
+        }),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error sending email: $e');
+      return false;
+    }
+  }
+}
+
 class AppConstants {
   // Personal Information
   static const String name = "Muhammad Muneeb Ur Rehman";
@@ -11,6 +52,11 @@ class AppConstants {
   static const String website = "https://github.com/mun33b-exe";
   static const String cvUrl =
       "https://drive.google.com/file/d/1hR1Xw66etLEUC07XmpYFP-mHYFUR-PrV/view?usp=drive_link"; // Replace with your actual CV URL
+
+  // EmailJS Configuration
+  static const String emailJSServiceId = "service_f7t42vg";
+  static const String emailJSTemplateId = "template_c8zfvol";
+  static const String emailJSPublicKey = "0shJBOSgvFc3vHjje";
 
   // About
   static const String aboutText =
