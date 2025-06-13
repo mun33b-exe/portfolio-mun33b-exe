@@ -230,7 +230,8 @@ class _SocialLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [        _SocialButton(
+      children: [
+        _SocialButton(
           icon: Icons.email,
           onPressed: () => _launchUrl('mailto:${AppConstants.email}'),
         ),

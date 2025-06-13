@@ -14,15 +14,20 @@ class AppConstants {
   static const String aboutText =
       "I'm a passionate software developer with expertise in mobile and web development. "
       "I enjoy solving complex problems and creating user-friendly applications that make a difference. "
-      "With a strong background in Flutter, React, and backend technologies, I'm always eager to learn "
+      "With a strong background in Flutter and backend technologies, I'm always eager to learn "
       "new technologies and take on challenging projects.";
 
   // Skills
   static const List<String> skills = [
     "Flutter",
     "Dart",
-    "Firebase",
     "Bloc",
+    "Firebase",
+    "Java",
+    "Git",
+    "SQL",
+    "Laravel",
+    "Prototyping",
     "UI/UX Design",
     "REST APIs",
   ];
@@ -83,16 +88,25 @@ class AppConstants {
   // Certifications
   static const List<Map<String, String>> certifications = [
     {
-      "title": "Google Flutter Developer Certificate",
+      "title": "Google UX Design",
       "issuer": "Google",
-      "date": "2023",
-      "credential": "https://credentials.google.com/your-certificate",
+      "date": "2025",
+      "credential":
+          "https://drive.google.com/file/d/1KNDJU3cTnlP9xWxaYLzhNgtCl1UxHxB_/view",
     },
     {
-      "title": "AWS Certified Developer",
-      "issuer": "Amazon Web Services",
-      "date": "2022",
-      "credential": "https://aws.amazon.com/your-certificate",
+      "title": "Databases for Developers: Foundations",
+      "issuer": "Oracle",
+      "date": "2025",
+      "credential":
+          "https://drive.google.com/file/d/1sRN36O6CIPqvr67eVVQGZw9fPv3dGmvu/view",
+    },
+    {
+      "title": "Databases for Developers: Next Level",
+      "issuer": "Oracle",
+      "date": "2025",
+      "credential":
+          "https://drive.google.com/file/d/1sRN36O6CIPqvr67eVVQGZw9fPv3dGmvu/view",
     },
   ];
 }

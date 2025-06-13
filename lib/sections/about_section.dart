@@ -49,27 +49,16 @@ class _DesktopAbout extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              Row(
-                children: [
-                  _StatCard(
-                    title: "5+",
-                    subtitle: "Years Experience",
-                    icon: Icons.work_history,
-                  ),
-                  const SizedBox(width: 24),
-                  _StatCard(
-                    title: "50+",
-                    subtitle: "Projects Completed",
-                    icon: Icons.check_circle,
-                  ),
-                  const SizedBox(width: 24),
-                  _StatCard(
-                    title: "100K+",
-                    subtitle: "Users Reached",
-                    icon: Icons.people,
-                  ),
-                ],
+              const Text(
+                "Technologies I Work With",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryText,
+                ),
               ),
+              const SizedBox(height: 24),
+              _TechnologyGrid(),
             ],
           ),
         ),
@@ -117,18 +106,16 @@ class _MobileAbout extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _StatCard(title: "5+", subtitle: "Years", icon: Icons.work_history),
-            _StatCard(
-              title: "50+",
-              subtitle: "Projects",
-              icon: Icons.check_circle,
-            ),
-            _StatCard(title: "100K+", subtitle: "Users", icon: Icons.people),
-          ],
+        const Text(
+          "Technologies I Work With",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryText,
+          ),
         ),
+        const SizedBox(height: 24),
+        _TechnologyGrid(),
         const SizedBox(height: 48),
         const Text(
           "Skills & Technologies",
@@ -141,47 +128,6 @@ class _MobileAbout extends StatelessWidget {
         const SizedBox(height: 24),
         _SkillsGrid(),
       ],
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-
-  const _StatCard({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Icon(icon, color: AppColors.accent, size: 32),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryText,
-            ),
-          ),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.secondaryText,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
     );
   }
 }
@@ -217,6 +163,161 @@ class _SkillChip extends StatelessWidget {
           color: AppColors.primaryText,
           fontSize: 14,
           fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+class _TechnologyGrid extends StatelessWidget {
+  final List<Map<String, dynamic>> technologies = [
+    {'name': 'Flutter', 'icon': Icons.flutter_dash, 'color': Colors.blue},
+    {'name': 'Dart', 'icon': Icons.code, 'color': Colors.blue.shade700},
+    {
+      'name': 'Firebase',
+      'icon': Icons.local_fire_department,
+      'color': Colors.orange,
+    },
+    {'name': 'Bloc', 'icon': Icons.architecture, 'color': Colors.purple},
+    {'name': 'Java', 'icon': Icons.coffee, 'color': Colors.red.shade800},
+    {'name': 'Git', 'icon': Icons.source, 'color': Colors.orange.shade700},
+    {'name': 'SQL', 'icon': Icons.storage, 'color': Colors.blue.shade600},
+    {'name': 'Figma', 'icon': Icons.design_services, 'color': Colors.pink},
+    {'name': 'Laravel', 'icon': Icons.web, 'color': Colors.red.shade600},
+    {'name': 'Android Studio', 'icon': Icons.android, 'color': Colors.green},
+    {
+      'name': 'VS Code',
+      'icon': Icons.code_outlined,
+      'color': Colors.blue.shade500,
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveWidget.isMobile(context)
+        ? _buildMobileGrid()
+        : _buildDesktopGrid();
+  }
+
+  Widget _buildDesktopGrid() {
+    return Wrap(
+      spacing: 20,
+      runSpacing: 20,
+      alignment: WrapAlignment.start,
+      children: technologies
+          .map(
+            (tech) => _TechnologyItem(
+              name: tech['name'],
+              icon: tech['icon'],
+              color: tech['color'],
+              size: 48,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildMobileGrid() {
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      alignment: WrapAlignment.center,
+      children: technologies
+          .map(
+            (tech) => _TechnologyItem(
+              name: tech['name'],
+              icon: tech['icon'],
+              color: tech['color'],
+              size: 40,
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class _TechnologyItem extends StatefulWidget {
+  final String name;
+  final IconData icon;
+  final Color color;
+  final double size;
+
+  const _TechnologyItem({
+    required this.name,
+    required this.icon,
+    required this.color,
+    required this.size,
+  });
+
+  @override
+  State<_TechnologyItem> createState() => _TechnologyItemState();
+}
+
+class _TechnologyItemState extends State<_TechnologyItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _controller.forward(),
+      onExit: (_) => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: widget.size + 16,
+              height: widget.size + 16,
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: widget.color.withOpacity(0.3),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: widget.color.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(widget.icon, size: widget.size, color: widget.color),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.name,
+              style: TextStyle(
+                color: AppColors.primaryText,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

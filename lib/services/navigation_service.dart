@@ -8,7 +8,7 @@ class NavigationService {
   ScrollController? _scrollController;
   final Map<String, GlobalKey> _sectionKeys = {};
   final ValueNotifier<String> _currentSection = ValueNotifier<String>('hero');
-  
+
   ValueNotifier<String> get currentSectionNotifier => _currentSection;
   void initialize(ScrollController scrollController) {
     _scrollController = scrollController;
@@ -17,29 +17,30 @@ class NavigationService {
 
   void _onScroll() {
     if (_scrollController == null || !_scrollController!.hasClients) return;
-    
+
     final scrollOffset = _scrollController!.offset;
     String newSection = 'hero';
-    
+
     // Check which section is currently visible
     for (final entry in _sectionKeys.entries) {
       final key = entry.value;
       final sectionName = entry.key;
-      
+
       if (key.currentContext != null) {
         final renderBox = key.currentContext!.findRenderObject() as RenderBox?;
         if (renderBox != null) {
           final position = renderBox.localToGlobal(Offset.zero);
           final sectionTop = scrollOffset + position.dy - kToolbarHeight;
-          
+
           // If we've scrolled past this section, it's potentially the current one
-          if (scrollOffset >= sectionTop - 100) { // 100px offset for better UX
+          if (scrollOffset >= sectionTop - 100) {
+            // 100px offset for better UX
             newSection = sectionName;
           }
         }
       }
     }
-    
+
     if (_currentSection.value != newSection) {
       _currentSection.value = newSection;
     }
@@ -79,6 +80,7 @@ class NavigationService {
       print('Navigation error: $e');
     }
   }
+
   Future<void> scrollToTop() async {
     if (_scrollController == null) return;
 

@@ -176,7 +176,10 @@ class _SocialImageIconButton extends StatelessWidget {
   final String imagePath;
   final VoidCallback onPressed;
 
-  const _SocialImageIconButton({required this.imagePath, required this.onPressed});
+  const _SocialImageIconButton({
+    required this.imagePath,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {

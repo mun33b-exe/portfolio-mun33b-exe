@@ -7,21 +7,22 @@ import 'common_widgets.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
-  
+
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
-  
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
   final NavigationService _navigationService = NavigationService();
-  
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<String>(
-      valueListenable: _navigationService.currentSectionNotifier,      builder: (context, currentSection, child) {
+      valueListenable: _navigationService.currentSectionNotifier,
+      builder: (context, currentSection, child) {
         return AppBar(
           backgroundColor: AppColors.background.withOpacity(0.95),
           elevation: 0,
@@ -55,7 +56,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
         );
       },
     );
-  }  Widget _NavButton(String text, VoidCallback onPressed, {bool isActive = false}) {
+  }
+
+  Widget _NavButton(
+    String text,
+    VoidCallback onPressed, {
+    bool isActive = false,
+  }) {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
@@ -90,7 +97,8 @@ class Footer extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [              _SocialIcon(
+            children: [
+              _SocialIcon(
                 Icons.email,
                 () => _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
               ),

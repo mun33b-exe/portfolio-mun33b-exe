@@ -24,6 +24,15 @@ class ExperienceSection extends StatelessWidget {
                 mobile: _MobileExperience(),
                 desktop: _DesktopExperience(),
               ),
+              const SizedBox(height: 80),
+              const SectionTitle(
+                title: "Certifications",
+                subtitle: "My achievements and credentials",
+              ),
+              ResponsiveWidget(
+                mobile: _MobileCertifications(),
+                desktop: _DesktopCertifications(),
+              ),
             ],
           ),
         ),
@@ -204,5 +213,125 @@ class _MobileExperience extends StatelessWidget {
         );
       }).toList(),
     );
+  }
+}
+
+class _DesktopCertifications extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 2.5,
+        crossAxisSpacing: 24,
+        mainAxisSpacing: 24,
+      ),
+      itemCount: AppConstants.certifications.length,
+      itemBuilder: (context, index) {
+        return _CertificationCard(AppConstants.certifications[index]);
+      },
+    );
+  }
+}
+
+class _MobileCertifications extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: AppConstants.certifications.map((cert) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: _CertificationCard(cert),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class _CertificationCard extends StatelessWidget {
+  final Map<String, String> certification;
+
+  const _CertificationCard(this.certification);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.accent.withOpacity(0.1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(Icons.verified, color: AppColors.accent, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      certification["title"]!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryText,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "${certification["issuer"]!} • ${certification["date"]!}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.secondaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: () => _launchUrl(certification["credential"]!),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.accent.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+              ),
+              child: const Text(
+                "View Credential",
+                style: TextStyle(
+                  color: AppColors.accent,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _launchUrl(String url) {
+    print('Would launch: $url');
+    // TODO: Implement URL launching when url_launcher is properly configured
   }
 }
