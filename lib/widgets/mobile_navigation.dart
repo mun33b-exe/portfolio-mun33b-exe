@@ -99,14 +99,13 @@ class MobileNavigation extends StatelessWidget {
                         icon: Icons.email,
                         onPressed: () =>
                             _launchUrl('mailto:m.muneeburrehmann@gmail.com'),
-                      ),
-                      _SocialImageIconButton(
+                      ),                      _SocialImageIconButton(
                         imagePath: 'assets/images/github.png',
                         onPressed: () =>
                             _launchUrl('https://github.com/mun33b-exe'),
                       ),
-                      _SocialIconButton(
-                        icon: Icons.work,
+                      _SocialImageIconButton(
+                        imagePath: 'assets/images/linkedin.png',
                         onPressed: () =>
                             _launchUrl('https://linkedin.com/in/mun33b-exe'),
                       ),

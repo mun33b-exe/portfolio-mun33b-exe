@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import '../constants/app_constants.dart';
 import '../constants/typography.dart';
@@ -241,14 +242,9 @@ class _SocialLinks extends StatelessWidget {
           onPressed: () => _launchUrl(AppConstants.github),
         ),
         const SizedBox(width: 16),
-        _SocialButton(
-          icon: Icons.work,
+        _SocialImageButton(
+          imagePath: 'assets/images/linkedin.png',
           onPressed: () => _launchUrl(AppConstants.linkedIn),
-        ),
-        const SizedBox(width: 16),
-        _SocialButton(
-          icon: Icons.language,
-          onPressed: () => _launchUrl(AppConstants.website),
         ),
       ],
     );
@@ -303,12 +299,21 @@ class _SocialImageButton extends StatelessWidget {
   }
 }
 
-void _downloadCV() {
-  // Implement CV download logic
-  print('Downloading CV...');
+Future<void> _downloadCV() async {
+  final Uri cvUri = Uri.parse(AppConstants.cvUrl);
+  if (await canLaunchUrl(cvUri)) {
+    await launchUrl(cvUri, mode: LaunchMode.externalApplication);
+  } else {
+    // Fallback - try to open in browser
+    await launchUrl(cvUri, mode: LaunchMode.platformDefault);
+  }
 }
 
 Future<void> _launchUrl(String url) async {
-  print('Would launch: $url');
-  // TODO: Implement URL launching when url_launcher is properly configured
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    print('Could not launch $url');
+  }
 }

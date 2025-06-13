@@ -9,6 +9,8 @@ class AppConstants {
   static const String linkedIn = "https://linkedin.com/in/mun33b-exe";
   static const String github = "https://github.com/mun33b-exe";
   static const String website = "https://github.com/mun33b-exe";
+  static const String cvUrl =
+      "https://drive.google.com/file/d/1hR1Xw66etLEUC07XmpYFP-mHYFUR-PrV/view?usp=drive_link"; // Replace with your actual CV URL
 
   // About
   static const String aboutText =
