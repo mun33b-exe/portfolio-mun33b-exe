@@ -8,14 +8,17 @@ import '../services/navigation_service.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final horizontalPadding = screenWidth < 768 ? 16.0 : 24.0;
+
     return Container(
       height: MediaQuery.of(context).size.height,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: ResponsiveWidget(
         mobile: const _MobileHero(),
+        tablet: const _TabletHero(),
         desktop: const _DesktopHero(),
       ),
     );
@@ -216,6 +219,110 @@ class _MobileHero extends StatelessWidget {
                 isPrimary: false,
                 icon: Icons.download,
               ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        _SocialLinks(),
+      ],
+    );
+  }
+}
+
+class _TabletHero extends StatelessWidget {
+  const _TabletHero();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 300,
+          height: 300,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accent.withOpacity(0.3),
+                blurRadius: 25,
+                spreadRadius: 4,
+              ),
+            ],
+          ),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/images/profile.png',
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.accent.withOpacity(0.3),
+                        AppColors.accent.withOpacity(0.1),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 150,
+                    color: AppColors.accent,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(height: 40),
+        Text(
+          "Hi, I'm",
+          style: AppTypography.bodyLargeSecondary,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          AppConstants.name,
+          style: AppTypography.h2,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          AppConstants.title,
+          style: AppTypography.accent,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            AppConstants.tagline,
+            style: AppTypography.tagline,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomButton(
+              text: "View My Work",
+              onPressed: () => NavigationService().scrollToSection('projects'),
+              icon: Icons.work_outline,
+            ),
+            const SizedBox(width: 16),
+            CustomButton(
+              text: "Download CV",
+              onPressed: () => _downloadCV(),
+              isPrimary: false,
+              icon: Icons.download,
             ),
           ],
         ),

@@ -34,6 +34,7 @@ class _ContactSectionState extends State<ContactSection> {
           constraints: const BoxConstraints(maxWidth: 1200),
           child: ResponsiveWidget(
             mobile: _MobileContact(),
+            tablet: _MobileContact(), // Use mobile layout for tablet too
             desktop: _DesktopContact(),
           ),
         ),
@@ -42,11 +43,35 @@ class _ContactSectionState extends State<ContactSection> {
   }
 
   Widget _DesktopContact() {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate responsive spacing and flex ratios
+    double horizontalSpacing;
+    int leftFlex;
+    int rightFlex;
+
+    if (screenWidth > 1400) {
+      horizontalSpacing = 80; // Large screens
+      leftFlex = 2;
+      rightFlex = 3;
+    } else if (screenWidth > 1200) {
+      horizontalSpacing = 60; // Medium screens
+      leftFlex = 2;
+      rightFlex = 3;
+    } else if (screenWidth > 1024) {
+      horizontalSpacing = 40; // Small desktop
+      leftFlex = 2;
+      rightFlex = 3;
+    } else {
+      // Switch to mobile layout for very small screens
+      return _MobileContact();
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 2,
+          flex: leftFlex,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,8 +93,8 @@ class _ContactSectionState extends State<ContactSection> {
             ],
           ),
         ),
-        const SizedBox(width: 80),
-        Expanded(flex: 3, child: _ContactForm()),
+        SizedBox(width: horizontalSpacing), // Responsive spacing
+        Expanded(flex: rightFlex, child: _ContactForm()),
       ],
     );
   }
