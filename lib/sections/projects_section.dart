@@ -6,11 +6,16 @@ import '../widgets/common_widgets.dart';
 
 class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveWidget.isMobile(context);
+    final isTablet = ResponsiveWidget.isTablet(context);
+    
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 16 : (isTablet ? 20 : 24),
+        vertical: isMobile ? 60 : (isTablet ? 70 : 80),
+      ),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -45,23 +50,23 @@ class _DesktopProjects extends StatelessWidget {
     double spacing;
 
     if (screenWidth > 1600) {
-      aspectRatio = 1.4; // Ultra-wide screens
+      aspectRatio = 1.3; // Ultra-wide screens - better proportions
       crossAxisCount = 2;
       spacing = 32;
     } else if (screenWidth > 1400) {
-      aspectRatio = 1.2; // Large screens
+      aspectRatio = 1.25; // Large screens - slightly taller
       crossAxisCount = 2;
-      spacing = 32;
+      spacing = 28;
     } else if (screenWidth > 1200) {
-      aspectRatio = 1.0; // Medium screens
+      aspectRatio = 1.2; // Medium screens - good balance
       crossAxisCount = 2;
       spacing = 24;
     } else if (screenWidth > 1024) {
-      aspectRatio = 0.9; // Smaller desktop screens
+      aspectRatio = 1.15; // Smaller desktop screens - prevent too tall cards
       crossAxisCount = 2;
       spacing = 20;
     } else {
-      aspectRatio = 0.8; // Very small desktop/tablet
+      aspectRatio = 1.4; // Tablet range - wider cards to prevent tallness
       crossAxisCount = 1;
       spacing = 16;
     }
@@ -87,14 +92,24 @@ class _DesktopProjects extends StatelessWidget {
 class _TabletProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    // Adjust aspect ratio based on tablet screen width
+    double aspectRatio;
+    if (screenWidth > 900) {
+      aspectRatio = 1.6; // Wider tablets
+    } else {
+      aspectRatio = 1.4; // Smaller tablets
+    }
+    
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1, // Single column for tablet
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 1.5, // Wider cards for tablet
+        childAspectRatio: aspectRatio, // Better proportions for tablet
       ),
       itemCount: AppConstants.projects.length,
       itemBuilder: (context, index) {
@@ -150,7 +165,6 @@ class _ProjectCardState extends State<_ProjectCard>
     _animationController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -160,28 +174,52 @@ class _ProjectCardState extends State<_ProjectCard>
     // Calculate responsive image height based on breakpoints
     double imageHeight;
     double cardPadding;
+    double titleFontSize;
+    double descriptionFontSize;
+    int maxDescriptionLines;
 
     if (isMobile) {
-      imageHeight = 200; // Mobile gets consistent height
+      imageHeight = 180; // Mobile gets consistent height
       cardPadding = 16;
+      titleFontSize = 18;
+      descriptionFontSize = 14;
+      maxDescriptionLines = 3;
     } else if (isTablet) {
-      imageHeight = 180; // Tablet size
-      cardPadding = 16;
-    } else if (screenWidth > 1600) {
-      imageHeight = 200; // Ultra-wide screens
-      cardPadding = 20;
-    } else if (screenWidth > 1400) {
-      imageHeight = 180; // Large screens
+      imageHeight = 200; // Tablet size - increased for better proportion
       cardPadding = 18;
+      titleFontSize = 20;
+      descriptionFontSize = 14;
+      maxDescriptionLines = 3;
+    } else if (screenWidth > 1600) {
+      imageHeight = 220; // Ultra-wide screens
+      cardPadding = 24;
+      titleFontSize = 22;
+      descriptionFontSize = 15;
+      maxDescriptionLines = 3;
+    } else if (screenWidth > 1400) {
+      imageHeight = 200; // Large screens
+      cardPadding = 20;
+      titleFontSize = 20;
+      descriptionFontSize = 14;
+      maxDescriptionLines = 3;
     } else if (screenWidth > 1200) {
-      imageHeight = 160; // Medium screens
-      cardPadding = 16;
+      imageHeight = 180; // Medium screens
+      cardPadding = 18;
+      titleFontSize = 18;
+      descriptionFontSize = 13;
+      maxDescriptionLines = 2;
     } else if (screenWidth > 1024) {
-      imageHeight = 150; // Small desktop
+      imageHeight = 160; // Small desktop
       cardPadding = 16;
+      titleFontSize = 17;
+      descriptionFontSize = 13;
+      maxDescriptionLines = 2;
     } else {
-      imageHeight = 140; // Very small screens
-      cardPadding = 12;
+      imageHeight = 180; // Very small screens
+      cardPadding = 16;
+      titleFontSize = 18;
+      descriptionFontSize = 14;
+      maxDescriptionLines = 3;
     }
 
     return MouseRegion(
@@ -200,54 +238,44 @@ class _ProjectCardState extends State<_ProjectCard>
               padding: EdgeInsets.all(cardPadding), // Use responsive padding
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,                children: [
-                  // Project Image
+                crossAxisAlignment: CrossAxisAlignment.start,                children: [                  // Project Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
                       height: imageHeight,
                       width: double.infinity,
-                      color: AppColors.card,
-                      padding: EdgeInsets.all(
-                        screenWidth < 1024 ? 4 : 8,
-                      ), // Responsive padding
-                      child:
-                          widget.project["image"] != null &&
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.accent.withOpacity(0.1),
+                            AppColors.accent.withOpacity(0.05),
+                          ],
+                        ),
+                        border: Border.all(
+                          color: AppColors.accent.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: widget.project["image"] != null &&
                               widget.project["image"].toString().isNotEmpty
                           ? Image.asset(
                               widget.project["image"],
-                              fit: BoxFit
-                                  .contain, // Use contain to preserve aspect ratio
+                              fit: BoxFit.cover,
                               alignment: Alignment.center,
                               errorBuilder: (context, error, stackTrace) {
-                                return Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    size: 40,
-                                    color: AppColors.accent,
-                                  ),
-                                );
+                                return _buildProjectPlaceholder();
                               },
                             )
-                          : Center(
-                              child: Icon(
-                                Icons.broken_image,
-                                size: 40,
-                                color: AppColors.accent,
-                              ),
-                            ),
+                          : _buildProjectPlaceholder(),
                     ),
-                  ),
-                  const SizedBox(height: 12),
+                  ),const SizedBox(height: 12),
                   // Project Title
                   Text(
                     widget.project["title"] ?? "",
                     style: TextStyle(
-                      fontSize: isMobile
-                          ? 18
-                          : (screenWidth > 1400
-                                ? 18
-                                : 16), // Responsive font size
+                      fontSize: titleFontSize, // Use responsive font size
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryText,
                     ),
@@ -259,26 +287,24 @@ class _ProjectCardState extends State<_ProjectCard>
                   Text(
                     widget.project["description"] ?? "",
                     style: TextStyle(
-                      fontSize: isMobile ? 14 : 13, // Slightly larger on mobile
+                      fontSize: descriptionFontSize, // Use responsive font size
                       color: AppColors.secondaryText,
                       height: 1.3,
                     ),
-                    maxLines: isMobile ? 3 : 2, // More lines on mobile
+                    maxLines: maxDescriptionLines, // Use responsive max lines
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
+                  ),                  const SizedBox(height: 8),
                   // Technologies
                   if (widget.project["technologies"] != null)
                     Wrap(
                       spacing: 4,
                       runSpacing: 3,
                       children: (widget.project["technologies"] as List<String>)
-                          .take(3)
+                          .take(isMobile || isTablet ? 4 : 3) // Show more on mobile/tablet
                           .map((tech) => _TechChip(tech))
                           .toList(),
                     ),
-                  const SizedBox(height: 10),
-                  // Buttons
+                  SizedBox(height: isMobile || isTablet ? 12 : 10), // More space on mobile/tablet                  // Buttons
                   Row(
                     children: [
                       Expanded(
@@ -287,13 +313,15 @@ class _ProjectCardState extends State<_ProjectCard>
                               _launchUrl(widget.project["github"] ?? ""),
                           icon: Image.asset(
                             'assets/images/github.png',
-                            width: 14,
-                            height: 14,
+                            width: isMobile || isTablet ? 16 : 14,
+                            height: isMobile || isTablet ? 16 : 14,
                             color: AppColors.accent,
                           ),
-                          label: const Text(
+                          label: Text(
                             "Code",
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: isMobile || isTablet ? 13 : 12,
+                            ),
                           ),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.accent,
@@ -301,9 +329,9 @@ class _ProjectCardState extends State<_ProjectCard>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isMobile || isTablet ? 12 : 8,
+                              vertical: isMobile || isTablet ? 8 : 4,
                             ),
                           ),
                         ),
@@ -313,10 +341,15 @@ class _ProjectCardState extends State<_ProjectCard>
                         child: ElevatedButton.icon(
                           onPressed: () =>
                               _launchUrl(widget.project["demo"] ?? ""),
-                          icon: const Icon(Icons.launch, size: 14),
-                          label: const Text(
+                          icon: Icon(
+                            Icons.launch, 
+                            size: isMobile || isTablet ? 16 : 14,
+                          ),
+                          label: Text(
                             "Demo",
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: isMobile || isTablet ? 13 : 12,
+                            ),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.accent,
@@ -324,9 +357,9 @@ class _ProjectCardState extends State<_ProjectCard>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isMobile || isTablet ? 12 : 8,
+                              vertical: isMobile || isTablet ? 8 : 4,
                             ),
                           ),
                         ),
@@ -341,24 +374,74 @@ class _ProjectCardState extends State<_ProjectCard>
       ),
     );
   }
+
+  Widget _buildProjectPlaceholder() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.accent.withOpacity(0.15),
+            AppColors.accent.withOpacity(0.05),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.web,
+            size: 40,
+            color: AppColors.accent.withOpacity(0.7),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Project Screenshot',
+            style: TextStyle(
+              color: AppColors.accent.withOpacity(0.7),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            'Coming Soon',
+            style: TextStyle(
+              color: AppColors.accent.withOpacity(0.5),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _TechChip extends StatelessWidget {
   final String tech;
 
   const _TechChip(this.tech);
+  
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveWidget.isMobile(context);
+    final isTablet = ResponsiveWidget.isTablet(context);
+    
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile || isTablet ? 8 : 6,
+        vertical: isMobile || isTablet ? 3 : 2,
+      ),
       decoration: BoxDecoration(
         color: AppColors.accent.withOpacity(0.2),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         tech,
-        style: const TextStyle(
-          fontSize: 10,
+        style: TextStyle(
+          fontSize: isMobile || isTablet ? 11 : 10,
           color: AppColors.accent,
           fontWeight: FontWeight.w500,
         ),

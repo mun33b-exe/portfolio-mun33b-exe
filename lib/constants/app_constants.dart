@@ -109,7 +109,7 @@ class AppConstants {
       "description":
           "A real-time chat application built with Flutter and Firebase. Features include group chats, file sharing, and user authentication.",
       "image": "assets/images/chatzilla.png",
-      "technologies": ["Flutter", "Firebase", "Bloc", "Dart"],
+      "technologies": ["Flutter", "Dart", "Bloc", "Firebase"],
       "github": "https://github.com/mun33b-exe/chatzilla",
       "demo": "https://chatzilla-demo.web.app",
     },
@@ -117,7 +117,7 @@ class AppConstants {
       "title": "Imei Tracker",
       "description":
           "IMEI Manager is an application designed to manage, track, and validate IMEI numbers for mobile devices. Also have role based access control for admin and user.",
-      "technologies": ["Flutter", "Firebase"],
+      "technologies": ["Flutter", "Dart", "Firebase"],
       "github": "https://github.com/mun33b-exe/imei-manager",
       "demo": "https://github.com/mun33b-exe/imei-manager",
       "image": "assets/images/imei.png",
