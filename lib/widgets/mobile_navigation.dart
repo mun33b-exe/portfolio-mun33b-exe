@@ -66,6 +66,14 @@ class MobileNavigation extends StatelessWidget {
                     },
                   ),
                   _NavItem(
+                    icon: Icons.school,
+                    title: 'Education',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      NavigationService().scrollToSection('education');
+                    },
+                  ),
+                  _NavItem(
                     icon: Icons.code,
                     title: 'Projects',
                     onTap: () {

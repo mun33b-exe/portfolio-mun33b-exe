@@ -4,6 +4,7 @@ import 'constants/colors.dart';
 import 'sections/hero_section.dart';
 import 'sections/about_section.dart';
 import 'sections/experience_section.dart';
+import 'sections/education_section.dart';
 import 'sections/projects_section.dart';
 import 'sections/contact_section.dart';
 import 'widgets/navigation.dart';
@@ -80,14 +81,13 @@ class PortfolioHome extends StatefulWidget {
 class _PortfolioHomeState extends State<PortfolioHome> {
   final ScrollController _scrollController = ScrollController();
   final NavigationService _navigationService = NavigationService();
-
   // Section keys for navigation
   final GlobalKey _heroKey = GlobalKey();
   final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
+  final GlobalKey _educationKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
-
   @override
   void initState() {
     super.initState();
@@ -95,6 +95,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
     _navigationService.registerSection('hero', _heroKey);
     _navigationService.registerSection('about', _aboutKey);
     _navigationService.registerSection('experience', _experienceKey);
+    _navigationService.registerSection('education', _educationKey);
     _navigationService.registerSection('projects', _projectsKey);
     _navigationService.registerSection('contact', _contactKey);
   }
@@ -120,6 +121,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
             HeroSection(key: _heroKey),
             AboutSection(key: _aboutKey),
             ExperienceSection(key: _experienceKey),
+            EducationSection(key: _educationKey),
             ProjectsSection(key: _projectsKey),
             ContactSection(key: _contactKey),
             const Footer(),

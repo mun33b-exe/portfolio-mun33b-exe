@@ -10,7 +10,7 @@ class ProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveWidget.isMobile(context);
     final isTablet = ResponsiveWidget.isTablet(context);
-    
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 16 : (isTablet ? 20 : 24),
@@ -93,7 +93,7 @@ class _TabletProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     // Adjust aspect ratio based on tablet screen width
     double aspectRatio;
     if (screenWidth > 900) {
@@ -101,7 +101,7 @@ class _TabletProjects extends StatelessWidget {
     } else {
       aspectRatio = 1.4; // Smaller tablets
     }
-    
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -165,6 +165,7 @@ class _ProjectCardState extends State<_ProjectCard>
     _animationController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -238,7 +239,9 @@ class _ProjectCardState extends State<_ProjectCard>
               padding: EdgeInsets.all(cardPadding), // Use responsive padding
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,                children: [                  // Project Image
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Project Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
@@ -258,7 +261,8 @@ class _ProjectCardState extends State<_ProjectCard>
                           width: 1,
                         ),
                       ),
-                      child: widget.project["image"] != null &&
+                      child:
+                          widget.project["image"] != null &&
                               widget.project["image"].toString().isNotEmpty
                           ? Image.asset(
                               widget.project["image"],
@@ -270,7 +274,8 @@ class _ProjectCardState extends State<_ProjectCard>
                             )
                           : _buildProjectPlaceholder(),
                     ),
-                  ),const SizedBox(height: 12),
+                  ),
+                  const SizedBox(height: 12),
                   // Project Title
                   Text(
                     widget.project["title"] ?? "",
@@ -293,18 +298,23 @@ class _ProjectCardState extends State<_ProjectCard>
                     ),
                     maxLines: maxDescriptionLines, // Use responsive max lines
                     overflow: TextOverflow.ellipsis,
-                  ),                  const SizedBox(height: 8),
+                  ),
+                  const SizedBox(height: 8),
                   // Technologies
                   if (widget.project["technologies"] != null)
                     Wrap(
                       spacing: 4,
                       runSpacing: 3,
                       children: (widget.project["technologies"] as List<String>)
-                          .take(isMobile || isTablet ? 4 : 3) // Show more on mobile/tablet
+                          .take(
+                            isMobile || isTablet ? 4 : 3,
+                          ) // Show more on mobile/tablet
                           .map((tech) => _TechChip(tech))
                           .toList(),
                     ),
-                  SizedBox(height: isMobile || isTablet ? 12 : 10), // More space on mobile/tablet                  // Buttons
+                  SizedBox(
+                    height: isMobile || isTablet ? 12 : 10,
+                  ), // More space on mobile/tablet                  // Buttons
                   Row(
                     children: [
                       Expanded(
@@ -342,7 +352,7 @@ class _ProjectCardState extends State<_ProjectCard>
                           onPressed: () =>
                               _launchUrl(widget.project["demo"] ?? ""),
                           icon: Icon(
-                            Icons.launch, 
+                            Icons.launch,
                             size: isMobile || isTablet ? 16 : 14,
                           ),
                           label: Text(
@@ -392,11 +402,7 @@ class _ProjectCardState extends State<_ProjectCard>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.web,
-            size: 40,
-            color: AppColors.accent.withOpacity(0.7),
-          ),
+          Icon(Icons.web, size: 40, color: AppColors.accent.withOpacity(0.7)),
           const SizedBox(height: 8),
           Text(
             'Project Screenshot',
@@ -423,12 +429,12 @@ class _TechChip extends StatelessWidget {
   final String tech;
 
   const _TechChip(this.tech);
-  
+
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveWidget.isMobile(context);
     final isTablet = ResponsiveWidget.isTablet(context);
-    
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile || isTablet ? 8 : 6,

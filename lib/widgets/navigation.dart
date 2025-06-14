@@ -41,6 +41,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     isActive: kIsWeb && currentSection == 'experience',
                   ),
                   _NavButton(
+                    'Education',
+                    () => _navigationService.scrollToSection('education'),
+                    isActive: kIsWeb && currentSection == 'education',
+                  ),
+                  _NavButton(
                     'Projects',
                     () => _navigationService.scrollToSection('projects'),
                     isActive: kIsWeb && currentSection == 'projects',
