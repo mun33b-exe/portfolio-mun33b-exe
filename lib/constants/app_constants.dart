@@ -101,17 +101,16 @@ class AppConstants {
           "Currently pursuing a Bachelor's degree in Software Engineering, focusing on mobile and web application development.",
     },
   ];
-
   // Projects
   static const List<Map<String, dynamic>> projects = [
     {
-      "title": "Chatzilla - Chat Application",
+      "title": "ChatZilla",
       "description":
-          "Chatzilla is a chat application designed for real-time messaging and communication. It offers a user-friendly interface for seamless conversations and supports multiple chat features for enhanced collaboration.",
-      "technologies": ["Flutter", "Firebase", "Bloc"],
+          "A real-time chat application built with Flutter and Firebase. Features include group chats, file sharing, and user authentication.",
+      "image": "assets/images/chatzilla.png",
+      "technologies": ["Flutter", "Firebase", "Dart"],
       "github": "https://github.com/mun33b-exe/chatzilla",
-      "demo": "https://github.com/mun33b-exe/chatzilla",
-      "image": "assets/images/linkedin.png",
+      "demo": "https://chatzilla-demo.web.app",
     },
     {
       "title": "Imei Tracker",
@@ -120,7 +119,7 @@ class AppConstants {
       "technologies": ["Flutter", "Firebase"],
       "github": "https://github.com/mun33b-exe/imei-manager",
       "demo": "https://github.com/mun33b-exe/imei-manager",
-      "image": "assets/images/project2.png",
+      "image": "assets/images/imei.png",
     },
     {
       "title": "HistoMeet - UI/UX Design Prototype",
@@ -130,7 +129,7 @@ class AppConstants {
       "github": "https://github.com/mun33b-exe/histomeet-ui-ux",
       "demo":
           "https://www.figma.com/design/87zDGjMBjTJzTdQpZbrDdl/HCI-Project?node-id=0-1&t=nkVRYEPqDdEztgER-1",
-      "image": "assets/images/project3.png",
+      "image": "assets/images/histomeet.png",
     },
   ];
 
