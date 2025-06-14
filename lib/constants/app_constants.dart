@@ -75,6 +75,7 @@ class AppConstants {
     "Git",
     "SQL",
     "Laravel",
+    "Figma",
     "Prototyping",
     "UI/UX Design",
     "REST APIs",
