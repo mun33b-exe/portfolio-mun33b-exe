@@ -27,7 +27,28 @@ class _CustomAppBarState extends State<CustomAppBar> {
           backgroundColor: AppColors.background.withOpacity(0.95),
           elevation: 0,
           scrolledUnderElevation: 0,
-          title: Text('Portfolio', style: AppTypography.h5),
+          title: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/images/profile.png',
+                  width: 32,
+                  height: 32,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      Icons.person,
+                      size: 32,
+                      color: AppColors.accent,
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text('Portfolio', style: AppTypography.h5),
+            ],
+          ),
           actions: ResponsiveWidget.isDesktop(context)
               ? [
                   _NavButton(

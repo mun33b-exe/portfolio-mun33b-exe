@@ -12,18 +12,40 @@ class MobileNavigation extends StatelessWidget {
       backgroundColor: AppColors.card,
       child: SafeArea(
         child: Column(
-          children: [
-            // Drawer Header
+          children: [            // Drawer Header
             Container(
               padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Portfolio',
-                    style: AppTypography.h5.copyWith(color: AppColors.accent),
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: Image.asset(
+                          'assets/images/profile.png',
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.person,
+                              size: 40,
+                              color: AppColors.accent,
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Portfolio',
+                          style: AppTypography.h5.copyWith(color: AppColors.accent),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     'Muhammad Muneeb Ur Rehman',
                     style: AppTypography.bodySmall.copyWith(
