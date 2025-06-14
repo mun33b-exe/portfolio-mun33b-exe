@@ -23,6 +23,7 @@ class ExperienceSection extends StatelessWidget {
               ),
               ResponsiveWidget(
                 mobile: _MobileExperience(),
+                tablet: _MobileExperience(), // Use mobile layout for tablet
                 desktop: _DesktopExperience(),
               ),
               const SizedBox(height: 80),
@@ -32,6 +33,7 @@ class ExperienceSection extends StatelessWidget {
               ),
               ResponsiveWidget(
                 mobile: _MobileCertifications(),
+                tablet: _MobileCertifications(), // Use mobile layout for tablet
                 desktop: _DesktopCertifications(),
               ),
             ],
@@ -220,14 +222,39 @@ class _MobileExperience extends StatelessWidget {
 class _DesktopCertifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate responsive layout
+    double aspectRatio;
+    int crossAxisCount;
+    double spacing;
+
+    if (screenWidth > 1400) {
+      aspectRatio = 4.0; // Wider cards for large screens
+      crossAxisCount = 2;
+      spacing = 24;
+    } else if (screenWidth > 1200) {
+      aspectRatio = 3.8; // Medium screens
+      crossAxisCount = 2;
+      spacing = 20;
+    } else if (screenWidth > 1024) {
+      aspectRatio = 3.5; // Smaller desktop
+      crossAxisCount = 2;
+      spacing = 16;
+    } else {
+      aspectRatio = 2.5; // Single column for very small screens
+      crossAxisCount = 1;
+      spacing = 16;
+    }
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2.5,
-        crossAxisSpacing: 24,
-        mainAxisSpacing: 24,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: aspectRatio,
+        crossAxisSpacing: spacing,
+        mainAxisSpacing: spacing,
       ),
       itemCount: AppConstants.certifications.length,
       itemBuilder: (context, index) {

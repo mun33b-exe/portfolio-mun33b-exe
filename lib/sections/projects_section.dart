@@ -23,6 +23,7 @@ class ProjectsSection extends StatelessWidget {
               ),
               ResponsiveWidget(
                 mobile: _MobileProjects(),
+                tablet: _TabletProjects(), // Add tablet layout
                 desktop: _DesktopProjects(),
               ),
             ],
@@ -36,14 +37,64 @@ class ProjectsSection extends StatelessWidget {
 class _DesktopProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate responsive aspect ratio based on screen width
+    double aspectRatio;
+    int crossAxisCount;
+    double spacing;
+
+    if (screenWidth > 1600) {
+      aspectRatio = 1.4; // Ultra-wide screens
+      crossAxisCount = 2;
+      spacing = 32;
+    } else if (screenWidth > 1400) {
+      aspectRatio = 1.2; // Large screens
+      crossAxisCount = 2;
+      spacing = 32;
+    } else if (screenWidth > 1200) {
+      aspectRatio = 1.0; // Medium screens
+      crossAxisCount = 2;
+      spacing = 24;
+    } else if (screenWidth > 1024) {
+      aspectRatio = 0.9; // Smaller desktop screens
+      crossAxisCount = 2;
+      spacing = 20;
+    } else {
+      aspectRatio = 0.8; // Very small desktop/tablet
+      crossAxisCount = 1;
+      spacing = 16;
+    }
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: spacing,
+        mainAxisSpacing: spacing,
+        childAspectRatio: aspectRatio,
+      ),
+      itemCount: AppConstants.projects.length,
+      itemBuilder: (context, index) {
+        final project = AppConstants.projects[index];
+        return _ProjectCard(project: project);
+      },
+    );
+  }
+}
+
+class _TabletProjects extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 32,
-        mainAxisSpacing: 32,
-        childAspectRatio: 1.2,
+        crossAxisCount: 1, // Single column for tablet
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 1.5, // Wider cards for tablet
       ),
       itemCount: AppConstants.projects.length,
       itemBuilder: (context, index) {
@@ -102,6 +153,37 @@ class _ProjectCardState extends State<_ProjectCard>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = ResponsiveWidget.isMobile(context);
+    final isTablet = ResponsiveWidget.isTablet(context);
+
+    // Calculate responsive image height based on breakpoints
+    double imageHeight;
+    double cardPadding;
+
+    if (isMobile) {
+      imageHeight = 200; // Mobile gets consistent height
+      cardPadding = 16;
+    } else if (isTablet) {
+      imageHeight = 180; // Tablet size
+      cardPadding = 16;
+    } else if (screenWidth > 1600) {
+      imageHeight = 200; // Ultra-wide screens
+      cardPadding = 20;
+    } else if (screenWidth > 1400) {
+      imageHeight = 180; // Large screens
+      cardPadding = 18;
+    } else if (screenWidth > 1200) {
+      imageHeight = 160; // Medium screens
+      cardPadding = 16;
+    } else if (screenWidth > 1024) {
+      imageHeight = 150; // Small desktop
+      cardPadding = 16;
+    } else {
+      imageHeight = 140; // Very small screens
+      cardPadding = 12;
+    }
+
     return MouseRegion(
       onEnter: (_) {
         _animationController.forward();
@@ -115,140 +197,137 @@ class _ProjectCardState extends State<_ProjectCard>
           return Transform.scale(
             scale: _scaleAnimation.value,
             child: GlassCard(
+              padding: EdgeInsets.all(cardPadding), // Use responsive padding
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Project Image
-                  Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.button,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.accent.withOpacity(0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      height: imageHeight,
+                      width: double.infinity,
+                      color: AppColors.card,
+                      padding: EdgeInsets.all(
+                        screenWidth < 1024 ? 4 : 8,
+                      ), // Responsive padding
                       child:
                           widget.project["image"] != null &&
                               widget.project["image"].toString().isNotEmpty
                           ? Image.asset(
                               widget.project["image"],
-                              fit: BoxFit.cover,
+                              fit: BoxFit
+                                  .contain, // Use contain to preserve aspect ratio
+                              alignment: Alignment.center,
                               errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.accent.withOpacity(0.2),
-                                        AppColors.accent.withOpacity(0.1),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.code,
-                                      size: 64,
-                                      color: AppColors.accent,
-                                    ),
+                                return Center(
+                                  child: Icon(
+                                    Icons.broken_image,
+                                    size: 40,
+                                    color: AppColors.accent,
                                   ),
                                 );
                               },
                             )
-                          : Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.accent.withOpacity(0.2),
-                                    AppColors.accent.withOpacity(0.1),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.code,
-                                  size: 64,
-                                  color: AppColors.accent,
-                                ),
+                          : Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                size: 40,
+                                color: AppColors.accent,
                               ),
                             ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
+                  // Project Title
                   Text(
-                    widget.project["title"],
-                    style: const TextStyle(
-                      fontSize: 20,
+                    widget.project["title"] ?? "",
+                    style: TextStyle(
+                      fontSize: isMobile
+                          ? 18
+                          : (screenWidth > 1400
+                                ? 18
+                                : 16), // Responsive font size
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryText,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.project["description"],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.secondaryText,
-                      height: 1.5,
-                    ),
-                    maxLines: 3,
+                    maxLines: isMobile ? 2 : 1, // More lines on mobile
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: (widget.project["technologies"] as List<String>)
-                        .map((tech) => _TechChip(tech))
-                        .toList(),
+                  const SizedBox(height: 6),
+                  // Project Description
+                  Text(
+                    widget.project["description"] ?? "",
+                    style: TextStyle(
+                      fontSize: isMobile ? 14 : 13, // Slightly larger on mobile
+                      color: AppColors.secondaryText,
+                      height: 1.3,
+                    ),
+                    maxLines: isMobile ? 3 : 2, // More lines on mobile
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 8),
+                  // Technologies
+                  if (widget.project["technologies"] != null)
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 3,
+                      children: (widget.project["technologies"] as List<String>)
+                          .take(3)
+                          .map((tech) => _TechChip(tech))
+                          .toList(),
+                    ),
+                  const SizedBox(height: 10),
+                  // Buttons
                   Row(
                     children: [
                       Expanded(
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: OutlinedButton.icon(
-                            onPressed: () =>
-                                _launchUrl(widget.project["github"]),
-                            icon: Image.asset(
-                              'assets/images/github.png',
-                              width: 16,
-                              height: 16,
-                              color: AppColors.accent,
+                        child: OutlinedButton.icon(
+                          onPressed: () =>
+                              _launchUrl(widget.project["github"] ?? ""),
+                          icon: Image.asset(
+                            'assets/images/github.png',
+                            width: 14,
+                            height: 14,
+                            color: AppColors.accent,
+                          ),
+                          label: const Text(
+                            "Code",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.accent,
+                            side: const BorderSide(color: AppColors.accent),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
                             ),
-                            label: const Text("Code"),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.accent,
-                              side: const BorderSide(color: AppColors.accent),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 6),
                       Expanded(
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: ElevatedButton.icon(
-                            onPressed: () => _launchUrl(widget.project["demo"]),
-                            icon: const Icon(Icons.launch, size: 16),
-                            label: const Text("Demo"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.accent,
-                              foregroundColor: AppColors.primaryText,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                        child: ElevatedButton.icon(
+                          onPressed: () =>
+                              _launchUrl(widget.project["demo"] ?? ""),
+                          icon: const Icon(Icons.launch, size: 14),
+                          label: const Text(
+                            "Demo",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                            foregroundColor: AppColors.primaryText,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
                             ),
                           ),
                         ),
@@ -269,19 +348,18 @@ class _TechChip extends StatelessWidget {
   final String tech;
 
   const _TechChip(this.tech);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: AppColors.accent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         tech,
         style: const TextStyle(
-          fontSize: 12,
+          fontSize: 10,
           color: AppColors.accent,
           fontWeight: FontWeight.w500,
         ),

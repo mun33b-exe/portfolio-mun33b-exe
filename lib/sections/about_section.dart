@@ -8,13 +8,20 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final horizontalPadding = screenWidth < 768 ? 16.0 : 24.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: 80,
+      ),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: ResponsiveWidget(
             mobile: const _MobileAbout(),
+            tablet: const _TabletAbout(),
             desktop: const _DesktopAbout(),
           ),
         ),
@@ -79,6 +86,74 @@ class _DesktopAbout extends StatelessWidget {
               _SkillsGrid(),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TabletAbout extends StatelessWidget {
+  const _TabletAbout();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(
+          title: "About Me",
+          subtitle: "Get to know me better",
+        ),
+        Text(
+          AppConstants.aboutText,
+          style: const TextStyle(
+            fontSize: 17,
+            color: AppColors.secondaryText,
+            height: 1.7,
+          ),
+        ),
+        const SizedBox(height: 40),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Technologies I Work With",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _TechnologyGrid(),
+                ],
+              ),
+            ),
+            const SizedBox(width: 40),
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Skills & Technologies",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _SkillsGrid(),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

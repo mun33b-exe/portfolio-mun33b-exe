@@ -109,7 +109,7 @@ class AppConstants {
       "description":
           "A real-time chat application built with Flutter and Firebase. Features include group chats, file sharing, and user authentication.",
       "image": "assets/images/chatzilla.png",
-      "technologies": ["Flutter", "Firebase", "Dart"],
+      "technologies": ["Flutter", "Firebase", "Bloc", "Dart"],
       "github": "https://github.com/mun33b-exe/chatzilla",
       "demo": "https://chatzilla-demo.web.app",
     },
