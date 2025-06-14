@@ -118,26 +118,67 @@ class _ProjectCardState extends State<_ProjectCard>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Project Image Placeholder
+                  // Project Image
                   Container(
                     height: 200,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: AppColors.button,
                       borderRadius: BorderRadius.circular(12),
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.accent.withOpacity(0.2),
-                          AppColors.accent.withOpacity(0.1),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                      border: Border.all(
+                        color: AppColors.accent.withOpacity(0.2),
+                        width: 1,
                       ),
                     ),
-                    child: const Icon(
-                      Icons.code,
-                      size: 64,
-                      color: AppColors.accent,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child:
+                          widget.project["image"] != null &&
+                              widget.project["image"].toString().isNotEmpty
+                          ? Image.asset(
+                              widget.project["image"],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.accent.withOpacity(0.2),
+                                        AppColors.accent.withOpacity(0.1),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.code,
+                                      size: 64,
+                                      color: AppColors.accent,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.accent.withOpacity(0.2),
+                                    AppColors.accent.withOpacity(0.1),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.code,
+                                  size: 64,
+                                  color: AppColors.accent,
+                                ),
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 16),
